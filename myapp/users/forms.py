@@ -29,13 +29,13 @@ class RegistrationForm(FlaskForm):
   #when someone is registering - if the email exists then we want to raise a validation error
   def check_email(self, field):
     if User.query.filter_by(email=field.data).first():
-      raise ValidationError('Your email has been registered already!')
+        raise ValidationError('Your email has been registered already!')
   
-  #same as above but checking username
+    #same as above but checking username
   def check_username(self, field):
     if User.query.filter_by(username=field.data).first():
       raise ValidationError('Your username has been registered already!')
-
+  
 
 class UpdateUserForm(FlaskForm):
   email = StringField('Email', validators=[DataRequired(), Email()]) 

@@ -26,11 +26,11 @@ class User(db.Model, UserMixin):
     self.password_hash = generate_password_hash(password)
 
 #going to use this in our login view 
-def check_password(self, password):
-  return check_password_hash(self.password_hash, password)
-
-def __repr__(self):
-  return f"Username {self.username}"
+  def check_password(self, password):
+    return check_password_hash(self.password_hash, password)
+  
+  def __repr__(self):
+    return f"Username {self.username}"
 
 class BlogPost(db.Model):
   __tablename__ = 'blog_posts'
@@ -39,11 +39,11 @@ class BlogPost(db.Model):
   title = db.Column(db.String(140), nullable=False)
   text = db.Column(db.Text, nullable=False)
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-  
-def __init__(self, title, text, user_id):
-  self.title = title
-  self.text = text
-  self.user_id = user_id
-  
-def __repr__(self):
-  return f"Post ID: {self.id} -- Date: {self.date} --- Title: {self.title}"
+
+  def __init__(self, title, text, user_id):
+    self.title = title
+    self.text = text
+    self.user_id = user_id
+
+  def __repr__(self):
+    return f"Post ID: {self.id} -- Date: {self.date} --- Title: {self.Title}"
