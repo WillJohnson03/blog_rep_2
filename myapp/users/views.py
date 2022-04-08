@@ -1,9 +1,10 @@
 from crypt import methods
 from operator import methodcaller
+from re import U
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from myapp import db
-from myapp.models import User
+from myapp.models import User, BlogPost
 from myapp.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 
 users = Blueprint('users', __name__) # dont forget to register this in __init__.py 
@@ -40,7 +41,7 @@ def login():
       next = request.args.get('next')
 
       if next ==None or not next[0]=='/':
-          next = url_for('core.index')
+        next = url_for('core.index')
 
       return redirect(next)
 
@@ -69,3 +70,10 @@ def account():
     form.email.data = current_user.email
 
   return render_template('account.html', form=form)
+
+@users.route('</username>')
+def user_posts(username):
+  page = request.args.get('page', 1, type=int)
+  user = User.query.filter_by(username=username).first_or_404()
+  blog_posts = BlogPost.query.filter_by(auther=user).order_by(BlogPost.date.desc()).paginate(page=page, per_page=5)
+  return render_template('user_blog_posts.html', blog_posts=blog_posts, user=user)
